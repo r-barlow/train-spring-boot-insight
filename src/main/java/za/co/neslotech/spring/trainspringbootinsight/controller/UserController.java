@@ -52,7 +52,7 @@ public class UserController {
                 new EntityNotFoundException(String.format("The User with id %d was not found!", id))
         );
 
-        BeanUtils.copyProperties(user, existingUser);
+        BeanUtils.copyProperties(user, existingUser, "userId");
 
         return userRepository.saveAndFlush(existingUser);
     }
