@@ -1,6 +1,5 @@
 package za.co.neslotech.spring.trainspringbootinsight.model;
 
-import jakarta.persistence.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
