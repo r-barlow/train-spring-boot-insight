@@ -5,6 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "account")
 public class Account {
@@ -15,6 +19,9 @@ public class Account {
 
     @Column
     private String name;
+
+    @OneToMany(mappedBy = "account")
+    private List<Category> categories =  new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -30,5 +37,13 @@ public class Account {
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(final List<Category> categories) {
+        this.categories = categories;
     }
 }
