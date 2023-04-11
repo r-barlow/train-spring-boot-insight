@@ -1,5 +1,6 @@
 package za.co.neslotech.spring.trainspringbootinsight.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,12 +24,15 @@ public class User {
     private String username;
 
     @Column(name = "first_name")
+    @JsonProperty("first_name")
     private String firstName;
 
     @Column(name = "last_name")
+    @JsonProperty("last_name")
     private String lastName;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonProperty("budgets")
     private List<Budget> budgets;
 
     public Long getId() {
