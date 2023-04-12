@@ -1,6 +1,10 @@
 package za.co.neslotech.spring.trainspringbootinsight.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.sql.Date;
 
@@ -9,28 +13,27 @@ public class Budget {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "budget_id")
-    private int budgetId;
+    private int id;
 
-    @Column(name = "created")
+    @Column
     private Date created;
 
-    @Column(name = "name")
+    @Column
     private String name;
 
-    public int getBudgetId() {
-        return budgetId;
+    public int getId() {
+        return id;
     }
 
-    public void setBudgetId(int budgetId) {
-        this.budgetId = budgetId;
+    public void setId(final int id) {
+        this.id = id;
     }
 
     public Date getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(final Date created) {
         this.created = created;
     }
 
@@ -38,7 +41,7 @@ public class Budget {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 }
