@@ -1,6 +1,10 @@
 package za.co.neslotech.spring.trainspringbootinsight.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.sql.Date;
 
@@ -9,31 +13,30 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transaction_id")
-    private Long transactionId;
+    private Long id;
 
     @Column(name = "transaction_date")
     private Date transactionDate;
 
-    @Column(name = "description")
+    @Column
     private String description;
 
-    @Column(name = "amount", length = 19, precision = 4)
+    @Column(length = 19, precision = 4)
     private Double amount;
 
-    public Long getTransactionId() {
-        return transactionId;
+    public Long getId() {
+        return id;
     }
 
-    public void setTransactionId(Long transactionId) {
-        this.transactionId = transactionId;
+    public void setId(final Long id) {
+        this.id = id;
     }
 
     public Date getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(Date transactionDate) {
+    public void setTransactionDate(final Date transactionDate) {
         this.transactionDate = transactionDate;
     }
 
@@ -41,7 +44,7 @@ public class Transaction {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -49,7 +52,7 @@ public class Transaction {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(final Double amount) {
         this.amount = amount;
     }
 }
