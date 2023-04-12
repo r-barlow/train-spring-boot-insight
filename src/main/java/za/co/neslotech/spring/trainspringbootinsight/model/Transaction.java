@@ -26,7 +26,7 @@ public class Transaction {
     private Double amount;
 
     @ManyToOne
-    private Transaction transaction;
+    private Category category;
 
     public Long getId() {
         return id;
@@ -60,11 +60,11 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public Transaction getTransaction() {
-        return transaction;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setTransaction(final Transaction transaction) {
-        this.transaction = transaction;
+    public void setCategory(final Category category) {
+        this.category = category;
     }
 }

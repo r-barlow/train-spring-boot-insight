@@ -27,7 +27,7 @@ public class Budget {
     private String name;
 
     @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL)
-    private List<Category> categories = new ArrayList<>();
+    private List<Category> categories;
 
     @ManyToOne
     private Rollover rollover;
@@ -60,7 +60,7 @@ public class Budget {
     }
 
     public List<Category> getCategories() {
-        return categories;
+        return categories == null ? new ArrayList<>() : categories;
     }
 
     public void setCategories(final List<Category> categories) {

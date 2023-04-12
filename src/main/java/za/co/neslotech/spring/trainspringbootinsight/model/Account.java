@@ -21,7 +21,7 @@ public class Account {
     private String name;
 
     @OneToMany(mappedBy = "account")
-    private List<Category> categories =  new ArrayList<>();
+    private List<Category> categories;
 
     public Long getId() {
         return id;
@@ -40,7 +40,7 @@ public class Account {
     }
 
     public List<Category> getCategories() {
-        return categories;
+        return categories == null ? new ArrayList<>() : categories;
     }
 
     public void setCategories(final List<Category> categories) {

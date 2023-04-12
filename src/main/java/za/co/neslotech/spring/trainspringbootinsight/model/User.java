@@ -29,7 +29,7 @@ public class User {
     private String lastName;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Budget> budgets = new ArrayList<>();
+    private List<Budget> budgets;
 
     public Long getId() {
         return id;
@@ -64,7 +64,7 @@ public class User {
     }
 
     public List<Budget> getBudgets() {
-        return budgets;
+        return budgets == null ? new ArrayList<>() : budgets;
     }
 
     public void setBudgets(final List<Budget> budgets) {

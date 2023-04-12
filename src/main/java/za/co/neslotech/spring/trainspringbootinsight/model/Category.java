@@ -35,7 +35,7 @@ public class Category {
     private Account account;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Transaction> transactions = new ArrayList<>();
+    private List<Transaction> transactions;
 
     public Long getId() {
         return id;
@@ -86,7 +86,7 @@ public class Category {
     }
 
     public List<Transaction> getTransactions() {
-        return transactions;
+        return transactions == null ? new ArrayList<>() : transactions;
     }
 
     public void setTransactions(final List<Transaction> transactions) {
