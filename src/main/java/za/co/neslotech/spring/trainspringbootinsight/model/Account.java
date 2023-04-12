@@ -20,15 +20,15 @@ public class Account {
         return id;
     }
 
-    public void setId(Long accountId) {
-        this.id = accountId;
+    public void setId(final Long id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 }
