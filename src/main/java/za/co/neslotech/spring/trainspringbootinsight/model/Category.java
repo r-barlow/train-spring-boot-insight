@@ -1,10 +1,16 @@
 package za.co.neslotech.spring.trainspringbootinsight.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "categories")
 public class Category {
@@ -21,6 +27,15 @@ public class Category {
 
     @Column(length = 19, precision = 4)
     private Double expected;
+
+    @ManyToOne
+    private Budget budget;
+
+    @ManyToOne
+    private Account account;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
 
     public Long getId() {
         return id;
@@ -52,5 +67,29 @@ public class Category {
 
     public void setExpected(final Double expected) {
         this.expected = expected;
+    }
+
+    public Budget getBudget() {
+        return budget;
+    }
+
+    public void setBudget(final Budget budget) {
+        this.budget = budget;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(final Account account) {
+        this.account = account;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions == null ? new ArrayList<>() : transactions;
+    }
+
+    public void setTransactions(final List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

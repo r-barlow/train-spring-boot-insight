@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 import java.sql.Date;
 
@@ -23,6 +24,9 @@ public class Transaction {
 
     @Column(length = 19, precision = 4)
     private Double amount;
+
+    @ManyToOne
+    private Category category;
 
     public Long getId() {
         return id;
@@ -54,5 +58,13 @@ public class Transaction {
 
     public void setAmount(final Double amount) {
         this.amount = amount;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(final Category category) {
+        this.category = category;
     }
 }

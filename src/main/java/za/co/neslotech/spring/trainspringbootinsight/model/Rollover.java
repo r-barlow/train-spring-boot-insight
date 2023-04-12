@@ -1,10 +1,15 @@
 package za.co.neslotech.spring.trainspringbootinsight.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "rollovers")
 public class Rollover {
@@ -15,6 +20,9 @@ public class Rollover {
 
     @Column
     private String name;
+
+    @OneToMany(mappedBy = "rollover", cascade = CascadeType.ALL)
+    private List<Budget> budgets;
 
     public Long getId() {
         return id;
@@ -30,5 +38,13 @@ public class Rollover {
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public List<Budget> getBudgets() {
+        return budgets == null ? new ArrayList<>() : budgets;
+    }
+
+    public void setBudgets(final List<Budget> budgets) {
+        this.budgets = budgets;
     }
 }
