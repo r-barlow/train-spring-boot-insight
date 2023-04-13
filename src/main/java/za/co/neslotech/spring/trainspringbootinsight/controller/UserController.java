@@ -26,6 +26,6 @@ public class UserController extends AGenericController<User, Long>{
 
     @Override
     protected String[] getUpdateColumnExclusions() {
-        return new String[]{"userId"};
+        return new String[]{"id"};
     }
 }
