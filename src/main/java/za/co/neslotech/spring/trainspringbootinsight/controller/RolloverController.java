@@ -20,12 +20,12 @@ public class RolloverController extends AGenericController<Rollover, Long> {
     }
 
     @Override
-    protected String getEntityNotFoundDescription(Long id) {
+    protected String getEntityNotFoundDescription(final Long id) {
         return String.format("The Rollover with id %d was not found!", id);
     }
 
     @Override
     protected String[] getUpdateColumnExclusions() {
-        return new String[]{"rolloverId"};
+        return new String[]{"id"};
     }
 }
