@@ -4,7 +4,13 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -18,7 +24,7 @@ import java.util.List;
 public abstract class AGenericController <T, I> {
 
     protected abstract JpaRepository<T, I> getRepository();
-    protected abstract String getEntityNotFoundDescription(I id);
+    protected abstract String getEntityNotFoundDescription(final I id);
     protected abstract String[] getUpdateColumnExclusions();
 
     @GetMapping
@@ -28,7 +34,7 @@ public abstract class AGenericController <T, I> {
 
     @GetMapping
     @RequestMapping("{id}")
-    public T get(@PathVariable I id){
+    public T get(final @PathVariable I id){
         return getRepository().findById(id).orElseThrow(() ->
                 new EntityNotFoundException(getEntityNotFoundDescription(id))
         );
@@ -36,12 +42,12 @@ public abstract class AGenericController <T, I> {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public T create(@RequestBody T entity){
+    public T create(final @RequestBody T entity){
         return getRepository().saveAndFlush(entity);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable I id) {
+    public void delete(final @PathVariable I id) {
         T entity = getRepository().findById(id).orElseThrow(() ->
                 new EntityNotFoundException(getEntityNotFoundDescription(id))
         );
@@ -50,7 +56,7 @@ public abstract class AGenericController <T, I> {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public T update(@PathVariable I id, @RequestBody T entity){
+    public T update(final @PathVariable I id, final @RequestBody T entity){
 
         T existingEntity = getRepository().findById(id).orElseThrow(() ->
                 new EntityNotFoundException(getEntityNotFoundDescription(id))
