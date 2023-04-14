@@ -32,7 +32,7 @@ public class UserService implements CrudService<User, Long> {
     public User findById(final Long id) {
         return repository.findById(id)
                 .orElseThrow(() ->
-                        new EntityNotFoundException("The User entity with the id %d was not found!")
+                        new EntityNotFoundException(String.format("The User entity with the id %d was not found!", id))
                 );
     }
 
