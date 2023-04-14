@@ -34,10 +34,7 @@ public abstract class CrudController<T, I> {
     @GetMapping
     @RequestMapping("{id}")
     public ResponseEntity<T> get(final @PathVariable I id){
-            return ResponseEntity.ok(getService().findById(id)
-                    .orElseThrow(() ->
-                            new EntityNotFoundException(String.format("Entity with id %s not found!", id))
-                    ));
+            return ResponseEntity.ok(getService().findById(id));
     }
 
     @PostMapping
@@ -52,10 +49,7 @@ public abstract class CrudController<T, I> {
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(final @PathVariable I id) {
-        final T entity = getService().findById(id)
-                .orElseThrow(() ->
-                        new EntityNotFoundException(String.format("Entity with id %s not found!", id))
-                );
+        final T entity = getService().findById(id);
 
         getService().delete(entity);
         return ResponseEntity.noContent().build();
@@ -63,10 +57,7 @@ public abstract class CrudController<T, I> {
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public ResponseEntity<T> update(final @PathVariable I id, final @RequestBody T entity){
-        final T existingEntity = getService().findById(id)
-                .orElseThrow(() ->
-                        new EntityNotFoundException(String.format("Entity with id %s not found!", id))
-                );
+        final T existingEntity = getService().findById(id);
 
         BeanUtils.copyProperties(entity, existingEntity, getService().getUpdateColumnExclusions());
 

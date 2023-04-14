@@ -10,7 +10,7 @@ public interface CrudService<T, I> {
 
     T update(T entity);
     List<T> findAll();
-    Optional<T> findById(I id);
+    T findById(I id);
     void delete(T entity);
     I getEntityId(T entity);
     String[] getUpdateColumnExclusions();
