@@ -13,9 +13,13 @@ public class UserService implements CrudService<User, Long> {
 
     private final IUserRepository repository;
 
-    @Autowired
     public UserService(final IUserRepository repository) {
         this.repository = repository;
+    }
+
+    @Override
+    public User create(final User entity) {
+        return repository.saveAndFlush(entity);
     }
 
     @Override

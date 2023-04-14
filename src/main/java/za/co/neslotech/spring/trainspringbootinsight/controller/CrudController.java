@@ -39,7 +39,7 @@ public abstract class CrudController<T, I> {
 
     @PostMapping
     public ResponseEntity<T> create(final @RequestBody T entity){
-        final var newEntity = getService().update(entity);
+        final var newEntity = getService().create(entity);
         final var location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(getService().getEntityId(newEntity))
@@ -60,6 +60,7 @@ public abstract class CrudController<T, I> {
         final T existingEntity = getService().findById(id);
 
         BeanUtils.copyProperties(entity, existingEntity, getService().getUpdateColumnExclusions());
+        getService().update(entity);
 
         return ResponseEntity.ok(existingEntity);
     }

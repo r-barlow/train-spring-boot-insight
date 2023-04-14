@@ -13,8 +13,7 @@ public class UserController extends CrudController<User, Long> {
 
     private final UserService service;
 
-    @Autowired
-    public UserController(UserService service) {
+    public UserController(final UserService service) {
         this.service = service;
     }
 

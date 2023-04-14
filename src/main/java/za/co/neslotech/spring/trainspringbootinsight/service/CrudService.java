@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface CrudService<T, I> {
 
+    T create(T entity);
     T update(T entity);
     List<T> findAll();
     T findById(I id);
