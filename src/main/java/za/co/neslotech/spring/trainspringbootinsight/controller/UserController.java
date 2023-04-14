@@ -1,31 +1,25 @@
 package za.co.neslotech.spring.trainspringbootinsight.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.neslotech.spring.trainspringbootinsight.model.User;
-import za.co.neslotech.spring.trainspringbootinsight.repository.IUserRepository;
+import za.co.neslotech.spring.trainspringbootinsight.service.CrudService;
+import za.co.neslotech.spring.trainspringbootinsight.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserController extends AGenericController<User, Long>{
+public class UserController extends CrudController<User, Long> {
+
+    private final UserService service;
 
     @Autowired
-    private IUserRepository userRepository;
-
-    @Override
-    protected JpaRepository<User, Long> getRepository() {
-        return userRepository;
+    public UserController(UserService service) {
+        this.service = service;
     }
 
     @Override
-    protected String getEntityNotFoundDescription(final Long id) {
-        return String.format("The User with id %d was not found!", id);
-    }
-
-    @Override
-    protected String[] getUpdateColumnExclusions() {
-        return new String[]{"id"};
+    protected CrudService<User, Long> getService() {
+        return service;
     }
 }
