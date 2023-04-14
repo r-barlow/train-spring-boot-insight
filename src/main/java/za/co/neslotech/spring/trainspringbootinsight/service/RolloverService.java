@@ -1,7 +1,6 @@
 package za.co.neslotech.spring.trainspringbootinsight.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.co.neslotech.spring.trainspringbootinsight.model.Rollover;
 import za.co.neslotech.spring.trainspringbootinsight.repository.IRolloverRepository;
@@ -13,9 +12,13 @@ public class RolloverService implements CrudService<Rollover, Long> {
 
     private final IRolloverRepository repository;
 
-    @Autowired
-    public RolloverService(IRolloverRepository repository) {
+    public RolloverService(final IRolloverRepository repository) {
         this.repository = repository;
+    }
+
+    @Override
+    public Rollover create(final Rollover entity) {
+        return repository.saveAndFlush(entity);
     }
 
     @Override
