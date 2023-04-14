@@ -1,7 +1,6 @@
 package za.co.neslotech.spring.trainspringbootinsight.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.co.neslotech.spring.trainspringbootinsight.model.User;
 import za.co.neslotech.spring.trainspringbootinsight.repository.IUserRepository;
