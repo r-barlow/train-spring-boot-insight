@@ -1,31 +1,23 @@
 package za.co.neslotech.spring.trainspringbootinsight.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.neslotech.spring.trainspringbootinsight.model.Account;
-import za.co.neslotech.spring.trainspringbootinsight.repository.IAccountRepository;
+import za.co.neslotech.spring.trainspringbootinsight.service.AccountService;
+import za.co.neslotech.spring.trainspringbootinsight.service.CrudService;
 
 @RestController
 @RequestMapping("/api/v1/accounts")
-public class AccountController extends AGenericController<Account, Long> {
+public class AccountController extends CrudController<Account, Long> {
 
-    @Autowired
-    private IAccountRepository accountRepository;
+    private final AccountService service;
 
-    @Override
-    protected JpaRepository<Account, Long> getRepository() {
-        return accountRepository;
+    public AccountController(final AccountService service) {
+        this.service = service;
     }
 
     @Override
-    protected String getEntityNotFoundDescription(Long id) {
-        return String.format("The Account with id %d was not found!", id);
-    }
-
-    @Override
-    protected String[] getUpdateColumnExclusions() {
-        return new String[]{"accountId"};
+    protected CrudService<Account, Long> getService() {
+        return service;
     }
 }
