@@ -1,5 +1,6 @@
 package za.co.neslotech.spring.trainspringbootinsight.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +19,6 @@ public class Transaction {
     private Long id;
 
     @Column(name = "transaction_date")
-    @JsonProperty("transaction_date")
     private Date transactionDate;
 
     @Column
@@ -28,6 +28,7 @@ public class Transaction {
     private Double amount;
 
     @ManyToOne
+    @JsonIgnoreProperties("transactions")
     private Category category;
 
     public Long getId() {
