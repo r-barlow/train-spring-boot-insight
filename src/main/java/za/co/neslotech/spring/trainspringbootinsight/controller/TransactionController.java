@@ -1,31 +1,23 @@
 package za.co.neslotech.spring.trainspringbootinsight.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.neslotech.spring.trainspringbootinsight.model.Transaction;
-import za.co.neslotech.spring.trainspringbootinsight.repository.ITransactionRepository;
+import za.co.neslotech.spring.trainspringbootinsight.service.CrudService;
+import za.co.neslotech.spring.trainspringbootinsight.service.TransactionService;
 
 @RestController
 @RequestMapping("/api/v1/transactions")
-public class TransactionController extends AGenericController<Transaction, Long> {
+public class TransactionController extends CrudController<Transaction, Long> {
 
-    @Autowired
-    private ITransactionRepository transactionRepository;
+    private final TransactionService service;
 
-    @Override
-    protected JpaRepository<Transaction, Long> getRepository() {
-        return transactionRepository;
+    public TransactionController(final TransactionService service) {
+        this.service = service;
     }
 
     @Override
-    protected String getEntityNotFoundDescription(Long id) {
-        return String.format("The Transaction with id %d was not found!", id);
-    }
-
-    @Override
-    protected String[] getUpdateColumnExclusions() {
-        return new String[]{"transactionId"};
+    protected CrudService<Transaction, Long> getService() {
+        return service;
     }
 }
