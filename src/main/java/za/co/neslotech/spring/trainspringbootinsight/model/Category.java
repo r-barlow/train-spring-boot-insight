@@ -1,5 +1,6 @@
 package za.co.neslotech.spring.trainspringbootinsight.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,9 +30,11 @@ public class Category {
     private Double expected;
 
     @ManyToOne
+    @JsonIgnoreProperties("categories")
     private Budget budget;
 
     @ManyToOne
+    @JsonIgnoreProperties("categories")
     private Account account;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)

@@ -1,5 +1,6 @@
 package za.co.neslotech.spring.trainspringbootinsight.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,9 +31,11 @@ public class Budget {
     private List<Category> categories;
 
     @ManyToOne
+    @JsonIgnoreProperties("budgets")
     private Rollover rollover;
 
     @ManyToOne
+    @JsonIgnoreProperties("budgets")
     private User user;
 
     public Long getId() {
