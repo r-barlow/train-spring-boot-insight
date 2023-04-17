@@ -10,7 +10,7 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "account")
+@Entity(name = "accounts")
 public class Account {
 
     @Id
