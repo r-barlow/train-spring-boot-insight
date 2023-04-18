@@ -1,5 +1,6 @@
 package za.co.neslotech.spring.trainspringbootinsight.service;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +12,7 @@ public class BasicAuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
-    public BasicAuthenticationService(final AuthenticationManager authenticationManager) {
+    public BasicAuthenticationService(@Lazy final AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
