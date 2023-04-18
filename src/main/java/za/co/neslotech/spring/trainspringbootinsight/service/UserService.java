@@ -2,9 +2,11 @@ package za.co.neslotech.spring.trainspringbootinsight.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.co.neslotech.spring.trainspringbootinsight.model.User;
 import za.co.neslotech.spring.trainspringbootinsight.repository.IUserRepository;
@@ -15,13 +17,16 @@ import java.util.List;
 public class UserService implements CrudService<User, Long> {
 
     private final IUserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(final IUserRepository repository) {
+    public UserService(final IUserRepository repository,@Lazy final PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public User create(final User entity) {
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         return repository.saveAndFlush(entity);
     }
 
