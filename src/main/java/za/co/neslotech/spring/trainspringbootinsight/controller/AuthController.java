@@ -28,9 +28,9 @@ public class AuthController {
 
     @PostMapping
     @RequestMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody User user) {
+    public ResponseEntity<AuthenticationResponse> register(final @RequestBody User user) {
 
-        var newUser = userService.create(user);
+        final var newUser = userService.create(user);
         return ResponseEntity.ok(new AuthenticationResponse(jwtService.createToken(newUser)));
     }
 
