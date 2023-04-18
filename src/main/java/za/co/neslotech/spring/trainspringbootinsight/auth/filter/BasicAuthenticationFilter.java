@@ -20,6 +20,9 @@ import java.io.IOException;
 @Component
 public class BasicAuthenticationFilter extends OncePerRequestFilter {
 
+    public static final String HEADER_AUTHORIZATION = "Authorization";
+    public static final String AUTHORIZATION_BASIC = "Basic";
+    public static final String SEPARATOR = ":";
     private final BasicAuthenticationService basicAuthService;
     private final UserDetailsService userDetailsService;
 
@@ -41,16 +44,16 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
 
     private void processBasicAuth(final HttpServletRequest request) {
 
-        final var authHeader = request.getHeader("Authorization");
+        final var authHeader = request.getHeader(HEADER_AUTHORIZATION);
 
-        if (authHeader != null && authHeader.startsWith("Basic")) {
+        if (authHeader != null && authHeader.startsWith(AUTHORIZATION_BASIC)) {
 
-            var data = authHeader.substring(6);
+            var data = authHeader.substring(AUTHORIZATION_BASIC.length() + 1);
 
             if (!data.isEmpty()) {
 
                 data = new String(Decoders.BASE64.decode(data));
-                final var dataArray = data.split(":");
+                final var dataArray = data.split(SEPARATOR);
 
                 if (dataArray.length == 2) {
 
