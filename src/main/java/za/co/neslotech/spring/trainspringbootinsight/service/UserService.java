@@ -1,6 +1,10 @@
 package za.co.neslotech.spring.trainspringbootinsight.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import za.co.neslotech.spring.trainspringbootinsight.model.User;
 import za.co.neslotech.spring.trainspringbootinsight.repository.IUserRepository;
@@ -52,5 +56,18 @@ public class UserService implements CrudService<User, Long> {
     @Override
     public String[] getUpdateColumnExclusions() {
         return new String[]{"id"};
+    }
+
+    @Bean
+    public UserDetailsService getUserDetailsService() {
+        return this::findByUsername;
+    }
+
+    public UserDetails findByUsername(final String username) {
+        return repository.findByUsername(username)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(
+                                String.format("The User with username '%s' was not found!", username))
+                );
     }
 }
