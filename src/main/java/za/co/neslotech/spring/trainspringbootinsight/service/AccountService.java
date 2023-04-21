@@ -35,7 +35,8 @@ public class AccountService implements CrudService<Account, Long> {
     public Account findById(final Long id) {
         return repository.findById(id)
                 .orElseThrow(() ->
-                        new EntityNotFoundException(String.format("The Account entity with id %d was not found!", id))
+                                     new EntityNotFoundException(
+                                             String.format("The Account entity with id %d was not found!", id))
                 );
     }
 

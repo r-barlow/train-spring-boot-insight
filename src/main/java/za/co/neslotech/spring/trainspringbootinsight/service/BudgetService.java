@@ -35,7 +35,8 @@ public class BudgetService implements CrudService<Budget, Long> {
     public Budget findById(final Long id) {
         return repository.findById(id)
                 .orElseThrow(() ->
-                        new EntityNotFoundException(String.format("The Budget entity with id %d was not found!", id))
+                                     new EntityNotFoundException(
+                                             String.format("The Budget entity with id %d was not found!", id))
                 );
     }
 

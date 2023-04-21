@@ -2,8 +2,6 @@ package za.co.neslotech.spring.trainspringbootinsight.controller;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,26 +24,41 @@ import java.util.List;
  */
 public abstract class CrudController<T, I> {
 
-    private boolean readOnly = false;
+    private boolean isCreateEnabled = true;
+    private boolean isUpdateEnabled = true;
+    private boolean isReadEnabled = true;
+    private boolean isDeleteEnabled = true;
 
     protected abstract CrudService<T, I> getService();
 
     @GetMapping
-    public ResponseEntity<List<T>> list() {
-        return ResponseEntity.ok(getService().findAll());
+    public ResponseEntity<List<T>> list()
+    throws HttpRequestMethodNotSupportedException {
+
+        if (isReadEnabled) {
+            return ResponseEntity.ok(getService().findAll());
+        } else {
+            throw new HttpRequestMethodNotSupportedException("GET");
+        }
     }
 
     @GetMapping
     @RequestMapping("{id}")
-    public ResponseEntity<T> get(final @PathVariable I id) {
-        return ResponseEntity.ok(getService().findById(id));
+    public ResponseEntity<T> get(final @PathVariable I id)
+    throws HttpRequestMethodNotSupportedException {
+
+        if (isReadEnabled) {
+            return ResponseEntity.ok(getService().findById(id));
+        } else {
+            throw new HttpRequestMethodNotSupportedException("GET");
+        }
     }
 
     @PostMapping
     public ResponseEntity<T> create(final @RequestBody T entity)
     throws HttpRequestMethodNotSupportedException {
 
-        if (!readOnly) {
+        if (isCreateEnabled) {
 
             final var newEntity = getService().create(entity);
             final var location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -61,19 +74,27 @@ public abstract class CrudController<T, I> {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> delete(final @PathVariable I id) {
-        final T entity = getService().findById(id);
+    public ResponseEntity<Void> delete(final @PathVariable I id)
+    throws HttpRequestMethodNotSupportedException {
 
-        getService().delete(entity);
-        return ResponseEntity.noContent()
-                .build();
+        if (isDeleteEnabled) {
+
+            final T entity = getService().findById(id);
+
+            getService().delete(entity);
+            return ResponseEntity.noContent()
+                    .build();
+        } else {
+            throw new HttpRequestMethodNotSupportedException("DELETE");
+        }
+
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> update(final @PathVariable I id, final @RequestBody T entity)
     throws HttpRequestMethodNotSupportedException {
 
-        if (!readOnly) {
+        if (isUpdateEnabled) {
 
             final T existingEntity = getService().findById(id);
             BeanUtils.copyProperties(entity, existingEntity, getService().getUpdateColumnExclusions());
@@ -86,7 +107,35 @@ public abstract class CrudController<T, I> {
         }
     }
 
-    public void setReadOnly(final boolean readOnly) {
-        this.readOnly = readOnly;
+    public boolean isCreateEnabled() {
+        return isCreateEnabled;
+    }
+
+    public void setCreateEnabled(final boolean createEnabled) {
+        isCreateEnabled = createEnabled;
+    }
+
+    public boolean isUpdateEnabled() {
+        return isUpdateEnabled;
+    }
+
+    public void setUpdateEnabled(final boolean updateEnabled) {
+        isUpdateEnabled = updateEnabled;
+    }
+
+    public boolean isReadEnabled() {
+        return isReadEnabled;
+    }
+
+    public void setReadEnabled(final boolean readEnabled) {
+        isReadEnabled = readEnabled;
+    }
+
+    public boolean isDeleteEnabled() {
+        return isDeleteEnabled;
+    }
+
+    public void setDeleteEnabled(final boolean deleteEnabled) {
+        isDeleteEnabled = deleteEnabled;
     }
 }

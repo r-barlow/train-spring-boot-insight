@@ -3,7 +3,6 @@ package za.co.neslotech.spring.trainspringbootinsight.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +18,7 @@ public class UserService implements CrudService<User, Long> {
     private final IUserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(final IUserRepository repository,@Lazy final PasswordEncoder passwordEncoder) {
+    public UserService(final IUserRepository repository, @Lazy final PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -44,7 +43,8 @@ public class UserService implements CrudService<User, Long> {
     public User findById(final Long id) {
         return repository.findById(id)
                 .orElseThrow(() ->
-                        new EntityNotFoundException(String.format("The User entity with the id %d was not found!", id))
+                                     new EntityNotFoundException(
+                                             String.format("The User entity with the id %d was not found!", id))
                 );
     }
 
@@ -71,8 +71,8 @@ public class UserService implements CrudService<User, Long> {
     public User findByUsername(final String username) {
         return repository.findByUsername(username)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException(
-                                String.format("The User with username '%s' was not found!", username))
+                                     new UsernameNotFoundException(
+                                             String.format("The User with username '%s' was not found!", username))
                 );
     }
 

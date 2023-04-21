@@ -13,7 +13,7 @@ public class UserController extends CrudController<User, Long> {
     private final UserService service;
 
     public UserController(final UserService service) {
-        setReadOnly(true);
+        setCreateEnabled(false);
         this.service = service;
     }
 
