@@ -68,11 +68,15 @@ public class UserService implements CrudService<User, Long> {
         return this::findByUsername;
     }
 
-    public UserDetails findByUsername(final String username) {
+    public User findByUsername(final String username) {
         return repository.findByUsername(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(
                                 String.format("The User with username '%s' was not found!", username))
                 );
+    }
+
+    public boolean verify(final User user, final String password) {
+        return passwordEncoder.matches(password, user.getPassword());
     }
 }

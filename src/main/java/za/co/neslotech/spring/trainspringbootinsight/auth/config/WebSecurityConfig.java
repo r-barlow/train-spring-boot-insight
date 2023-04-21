@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import za.co.neslotech.spring.trainspringbootinsight.auth.filter.BasicAuthenticationFilter;
 import za.co.neslotech.spring.trainspringbootinsight.auth.filter.JwtAuthenticationFilter;
 
 @Configuration
@@ -22,14 +22,10 @@ import za.co.neslotech.spring.trainspringbootinsight.auth.filter.JwtAuthenticati
 public class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
-    private final BasicAuthenticationFilter basicAuthFilter;
     private final UserDetailsService userDetailsService;
 
-    public WebSecurityConfig(final JwtAuthenticationFilter jwtAuthFilter,
-                             final BasicAuthenticationFilter basicAuthFilter,
-                             final UserDetailsService userDetailsService) {
+    public WebSecurityConfig(final JwtAuthenticationFilter jwtAuthFilter, final UserDetailsService userDetailsService) {
         this.jwtAuthFilter = jwtAuthFilter;
-        this.basicAuthFilter = basicAuthFilter;
         this.userDetailsService = userDetailsService;
     }
 
@@ -50,8 +46,7 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(basicAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
