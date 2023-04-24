@@ -60,16 +60,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final var authHeader = request.getHeader(HEADER_AUTHORIZATION);
 
-        if (authHeader == null)
+        if (authHeader == null) {
             throw new InvalidAuthorizationRequest(HttpStatus.UNAUTHORIZED, "No authorization header present!");
+        }
 
         var authArray = authHeader.split("\\s+");
 
-        if (authArray.length < 2)
+        if (authArray.length < 2) {
             throw new InvalidAuthorizationRequest(HttpStatus.UNAUTHORIZED, "Invalid authorization header!");
+        }
 
-        if (!authArray[0].startsWith(AUTHORIZATION_BEARER))
+        if (!authArray[0].startsWith(AUTHORIZATION_BEARER)) {
             throw new InvalidAuthorizationRequest(HttpStatus.UNAUTHORIZED, "Authorization method not supported!");
+        }
 
         final var token = authArray[1];
         final var username = jwtService.getUsername(token);

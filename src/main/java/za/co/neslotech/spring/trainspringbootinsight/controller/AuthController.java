@@ -38,8 +38,9 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> authorize(final @RequestBody AuthorizationRequest request) {
 
         final var user = userService.findByUsername(request.getUsername());
-        if (!userService.verify(user, request.getPassword()))
+        if (!userService.verify(user, request.getPassword())) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+        }
 
         return ResponseEntity.ok(
                 new AuthenticationResponse(
