@@ -2,22 +2,22 @@ package za.co.neslotech.spring.trainspringbootinsight.auth.model;
 
 public class AuthorizationRequest {
 
-    private String Username;
-    private String Password;
+    private String username;
+    private String password;
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
     public void setUsername(final String username) {
-        Username = username;
+        this.username = username;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(final String password) {
-        Password = password;
+        this.password = password;
     }
 }

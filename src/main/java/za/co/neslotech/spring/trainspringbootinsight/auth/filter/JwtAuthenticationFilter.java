@@ -45,8 +45,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             String path = request.getRequestURI();
-            if (!path.startsWith("/api/v1/auth"))
+            if (!path.startsWith("/api/v1/auth")) {
                 processJwtToken(request);
+            }
         } catch (InvalidAuthorizationRequest e) {
             resolver.resolveException(request, response, null, e);
         }
