@@ -60,7 +60,7 @@ public class UserService implements CrudService<User, Long> {
 
     @Override
     public String[] getUpdateColumnExclusions() {
-        return new String[]{"id"};
+        return new String[]{"id", "username", "password"};
     }
 
     @Bean

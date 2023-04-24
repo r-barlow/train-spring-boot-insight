@@ -2,7 +2,6 @@ package za.co.neslotech.spring.trainspringbootinsight.controller;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,120 +21,56 @@ import java.util.List;
  * @param <T> The entity class.
  * @param <I> The primary key field type.
  */
-public abstract class CrudController<T, I> {
-
-    private boolean isCreateEnabled = true;
-    private boolean isUpdateEnabled = true;
-    private boolean isReadEnabled = true;
-    private boolean isDeleteEnabled = true;
+public abstract class CrudController<T, I> implements ICreateController<T>,
+        IReadController<T, I>, IUpdateController<T, I>, IDeleteController<T, I> {
 
     protected abstract CrudService<T, I> getService();
 
+    @Override
     @GetMapping
-    public ResponseEntity<List<T>> list()
-    throws HttpRequestMethodNotSupportedException {
-
-        if (isReadEnabled) {
-            return ResponseEntity.ok(getService().findAll());
-        } else {
-            throw new HttpRequestMethodNotSupportedException("GET");
-        }
+    public ResponseEntity<List<T>> list() {
+        return ResponseEntity.ok(getService().findAll());
     }
 
+    @Override
     @GetMapping
     @RequestMapping("{id}")
-    public ResponseEntity<T> get(final @PathVariable I id)
-    throws HttpRequestMethodNotSupportedException {
-
-        if (isReadEnabled) {
-            return ResponseEntity.ok(getService().findById(id));
-        } else {
-            throw new HttpRequestMethodNotSupportedException("GET");
-        }
+    public ResponseEntity<T> get(final @PathVariable I id) {
+        return ResponseEntity.ok(getService().findById(id));
     }
 
+    @Override
     @PostMapping
-    public ResponseEntity<T> create(final @RequestBody T entity)
-    throws HttpRequestMethodNotSupportedException {
+    public ResponseEntity<T> create(final @RequestBody T entity) {
 
-        if (isCreateEnabled) {
-
-            final var newEntity = getService().create(entity);
-            final var location = ServletUriComponentsBuilder.fromCurrentRequest()
-                    .path("/{id}")
-                    .buildAndExpand(getService().getEntityId(newEntity))
-                    .toUri();
-            return ResponseEntity.created(location)
-                    .body(newEntity);
-
-        } else {
-            throw new HttpRequestMethodNotSupportedException("POST");
-        }
+        final var newEntity = getService().create(entity);
+        final var location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(getService().getEntityId(newEntity))
+                .toUri();
+        return ResponseEntity.created(location)
+                .body(newEntity);
     }
 
+    @Override
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> delete(final @PathVariable I id)
-    throws HttpRequestMethodNotSupportedException {
+    public ResponseEntity<Void> delete(final @PathVariable I id) {
 
-        if (isDeleteEnabled) {
+        final T entity = getService().findById(id);
 
-            final T entity = getService().findById(id);
-
-            getService().delete(entity);
-            return ResponseEntity.noContent()
-                    .build();
-        } else {
-            throw new HttpRequestMethodNotSupportedException("DELETE");
-        }
-
+        getService().delete(entity);
+        return ResponseEntity.noContent()
+                .build();
     }
 
+    @Override
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Object> update(final @PathVariable I id, final @RequestBody T entity)
-    throws HttpRequestMethodNotSupportedException {
+    public ResponseEntity<Object> update(final @PathVariable I id, final @RequestBody T entity) {
 
-        if (isUpdateEnabled) {
+        final T existingEntity = getService().findById(id);
+        BeanUtils.copyProperties(entity, existingEntity, getService().getUpdateColumnExclusions());
+        getService().update(existingEntity);
 
-            final T existingEntity = getService().findById(id);
-            BeanUtils.copyProperties(entity, existingEntity, getService().getUpdateColumnExclusions());
-            getService().update(entity);
-
-            return ResponseEntity.ok(existingEntity);
-
-        } else {
-            throw new HttpRequestMethodNotSupportedException("UPDATE");
-        }
-    }
-
-    public boolean isCreateEnabled() {
-        return isCreateEnabled;
-    }
-
-    public void setCreateEnabled(final boolean createEnabled) {
-        isCreateEnabled = createEnabled;
-    }
-
-    public boolean isUpdateEnabled() {
-        return isUpdateEnabled;
-    }
-
-    public void setUpdateEnabled(final boolean updateEnabled) {
-        isUpdateEnabled = updateEnabled;
-    }
-
-    public boolean isReadEnabled() {
-        return isReadEnabled;
-    }
-
-    public void setReadEnabled(final boolean readEnabled) {
-        isReadEnabled = readEnabled;
-    }
-
-    public boolean isDeleteEnabled() {
-        return isDeleteEnabled;
-    }
-
-    public void setDeleteEnabled(final boolean deleteEnabled) {
-        isDeleteEnabled = deleteEnabled;
+        return ResponseEntity.ok(existingEntity);
     }
 }

@@ -44,11 +44,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     throws ServletException, IOException {
 
         try {
-            String path = request.getRequestURI();
+            final String path = request.getRequestURI();
             if (!path.startsWith("/api/v1/auth")) {
                 processJwtToken(request);
             }
-        } catch (InvalidAuthorizationRequest e) {
+        } catch (final InvalidAuthorizationRequest e) {
             resolver.resolveException(request, response, null, e);
         }
 
@@ -64,7 +64,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throw new InvalidAuthorizationRequest(HttpStatus.UNAUTHORIZED, "No authorization header present!");
         }
 
-        var authArray = authHeader.split("\\s+");
+        final var authArray = authHeader.split("\\s+");
 
         if (authArray.length < 2) {
             throw new InvalidAuthorizationRequest(HttpStatus.UNAUTHORIZED, "Invalid authorization header!");
