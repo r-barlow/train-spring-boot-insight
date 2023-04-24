@@ -21,23 +21,28 @@ import java.util.List;
  * @param <T> The entity class.
  * @param <I> The primary key field type.
  */
-public abstract class CrudController<T, I> {
+public abstract class CrudController<T, I> implements ICreateController<T>,
+        IReadController<T, I>, IUpdateController<T, I>, IDeleteController<T, I> {
 
     protected abstract CrudService<T, I> getService();
 
+    @Override
     @GetMapping
     public ResponseEntity<List<T>> list() {
         return ResponseEntity.ok(getService().findAll());
     }
 
+    @Override
     @GetMapping
     @RequestMapping("{id}")
     public ResponseEntity<T> get(final @PathVariable I id) {
         return ResponseEntity.ok(getService().findById(id));
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<T> create(final @RequestBody T entity) {
+
         final var newEntity = getService().create(entity);
         final var location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -47,8 +52,10 @@ public abstract class CrudController<T, I> {
                 .body(newEntity);
     }
 
+    @Override
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(final @PathVariable I id) {
+
         final T entity = getService().findById(id);
 
         getService().delete(entity);
@@ -56,12 +63,13 @@ public abstract class CrudController<T, I> {
                 .build();
     }
 
+    @Override
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<T> update(final @PathVariable I id, final @RequestBody T entity) {
-        final T existingEntity = getService().findById(id);
+    public ResponseEntity<Object> update(final @PathVariable I id, final @RequestBody T entity) {
 
+        final T existingEntity = getService().findById(id);
         BeanUtils.copyProperties(entity, existingEntity, getService().getUpdateColumnExclusions());
-        getService().update(entity);
+        getService().update(existingEntity);
 
         return ResponseEntity.ok(existingEntity);
     }

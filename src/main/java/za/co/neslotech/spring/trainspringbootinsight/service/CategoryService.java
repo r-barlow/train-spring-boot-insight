@@ -35,7 +35,8 @@ public class CategoryService implements CrudService<Category, Long> {
     public Category findById(final Long id) {
         return repository.findById(id)
                 .orElseThrow(() ->
-                        new EntityNotFoundException(String.format("The Category entity with id %d was not found!", id))
+                                     new EntityNotFoundException(
+                                             String.format("The Category entity with id %d was not found!", id))
                 );
     }
 
