@@ -23,7 +23,7 @@ import za.co.neslotech.spring.trainspringbootinsight.auth.filter.JwtAuthenticati
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    public static final String ASTERISK = "*";
+    private static final String ASTERISK = "*";
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
 
