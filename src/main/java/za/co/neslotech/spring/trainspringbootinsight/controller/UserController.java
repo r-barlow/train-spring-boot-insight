@@ -37,6 +37,12 @@ public class UserController implements IReadController<User, Long>,
         return ResponseEntity.ok(service.findById(id));
     }
 
+    @GetMapping
+    @RequestMapping("find/{username}")
+    public ResponseEntity<User> get(final @PathVariable String username) {
+        return ResponseEntity.ok(service.findByUsername(username));
+    }
+
     @Override
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(final @PathVariable Long id) {
