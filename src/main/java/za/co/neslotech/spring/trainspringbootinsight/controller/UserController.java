@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.neslotech.spring.trainspringbootinsight.model.User;
 import za.co.neslotech.spring.trainspringbootinsight.service.UserService;
@@ -37,9 +38,8 @@ public class UserController implements IReadController<User, Long>,
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping
-    @RequestMapping("find/{username}")
-    public ResponseEntity<User> get(final @PathVariable String username) {
+    @RequestMapping(params = "username", method = RequestMethod.GET)
+    public ResponseEntity<User> get(final @RequestParam("username") String username) {
         return ResponseEntity.ok(service.findByUsername(username));
     }
 
