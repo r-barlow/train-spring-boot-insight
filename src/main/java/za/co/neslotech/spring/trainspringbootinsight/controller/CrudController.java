@@ -1,10 +1,13 @@
 package za.co.neslotech.spring.trainspringbootinsight.controller;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,20 +30,27 @@ public abstract class CrudController<T, I> implements ICreateController<T>,
     protected abstract CrudService<T, I> getService();
 
     @Override
-    @GetMapping
+    @GetMapping(
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<List<T>> list() {
         return ResponseEntity.ok(getService().findAll());
     }
 
     @Override
-    @GetMapping
-    @RequestMapping("{id}")
+    @GetMapping(
+            path = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<T> get(final @PathVariable I id) {
         return ResponseEntity.ok(getService().findById(id));
     }
 
     @Override
-    @PostMapping
+    @PostMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<T> create(final @RequestBody T entity) {
 
         final var newEntity = getService().create(entity);
@@ -53,7 +63,10 @@ public abstract class CrudController<T, I> implements ICreateController<T>,
     }
 
     @Override
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(
+            path = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<Void> delete(final @PathVariable I id) {
 
         final T entity = getService().findById(id);
@@ -64,7 +77,11 @@ public abstract class CrudController<T, I> implements ICreateController<T>,
     }
 
     @Override
-    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    @PutMapping(
+            path = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<Object> update(final @PathVariable I id, final @RequestBody T entity) {
 
         final T existingEntity = getService().findById(id);
