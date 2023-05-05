@@ -46,10 +46,10 @@ public class UserController implements IReadController<User, Long>,
     }
 
     @GetMapping(
-            params = "username",
+            path = "/find/{username}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<User> get(final @RequestParam("username") String username) {
+    public ResponseEntity<User> get(final @PathVariable String username) {
         return ResponseEntity.ok(service.findByUsername(username));
     }
 
