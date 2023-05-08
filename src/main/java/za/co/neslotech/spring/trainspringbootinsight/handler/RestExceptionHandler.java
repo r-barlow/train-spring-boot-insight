@@ -25,7 +25,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleEntityNotFound(final EntityNotFoundException exception,
                                                           final WebRequest request) {
 
-        var headers = new HttpHeaders();
+        final var headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
         return handleExceptionInternal(exception, String.format("{ \"message\": \"%s\"}", exception.getMessage()), headers,
@@ -48,7 +48,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpClientErrorException(@NonNull final HttpClientErrorException exception,
                                                                     @NonNull final WebRequest request) {
 
-        var headers = new HttpHeaders();
+        final var headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
         return handleExceptionInternal(exception, String.format("{ \"message\": \"%s\"}", exception.getMessage()), headers,
@@ -61,7 +61,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             @NonNull final InvalidAuthorizationRequest exception,
             @NonNull final WebRequest request) {
 
-        var headers = new HttpHeaders();
+        final var headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
         return handleExceptionInternal(exception, String.format("{ \"message\": \"%s\"}", exception.getMessage()), headers,
@@ -74,7 +74,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             @NonNull final UsernameNotFoundException exception,
             @NonNull final WebRequest request) {
 
-        var headers = new HttpHeaders();
+        final var headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
         return handleExceptionInternal(exception, String.format("{ \"message\": \"%s\"}", exception.getMessage()), headers,
