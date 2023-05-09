@@ -1,7 +1,6 @@
 package za.co.neslotech.spring.trainspringbootinsight.handler;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -15,8 +14,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import za.co.neslotech.spring.trainspringbootinsight.exception.InvalidAuthorizationRequest;
-
-import java.nio.file.AccessDeniedException;
+import za.co.neslotech.spring.trainspringbootinsight.exception.RestException;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -25,11 +23,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleEntityNotFound(final EntityNotFoundException exception,
                                                           final WebRequest request) {
 
-        final var headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-
-        return handleExceptionInternal(exception, String.format("{ \"message\": \"%s\"}", exception.getMessage()), headers,
-                                       HttpStatus.NOT_FOUND, request);
+        return handleExceptionInternal(exception,
+                                       new RestException(exception.getMessage(), HttpStatus.NOT_FOUND.value()),
+                                       new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @Override
@@ -38,9 +34,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             @NonNull final HttpHeaders headers, @NonNull final HttpStatusCode status,
             @NonNull final WebRequest request) {
 
-        headers.set("Content-Type", "application/json");
-
-        return handleExceptionInternal(exception, String.format("{ \"message\": \"%s\"}", exception.getMessage()), headers,
+        return handleExceptionInternal(exception, new RestException(exception.getMessage(), status.value()), headers,
                                        status, request);
     }
 
@@ -48,12 +42,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpClientErrorException(@NonNull final HttpClientErrorException exception,
                                                                     @NonNull final WebRequest request) {
 
-        final var headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-
-        return handleExceptionInternal(exception, String.format("{ \"message\": \"%s\"}", exception.getMessage()), headers,
-                                       exception.getStatusCode(),
-                                       request);
+        return handleExceptionInternal(exception, new RestException(exception.getMessage(), exception.getStatusCode()
+                .value()), new HttpHeaders(), exception.getStatusCode(), request);
     }
 
     @ExceptionHandler(InvalidAuthorizationRequest.class)
@@ -61,12 +51,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             @NonNull final InvalidAuthorizationRequest exception,
             @NonNull final WebRequest request) {
 
-        final var headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-
-        return handleExceptionInternal(exception, String.format("{ \"message\": \"%s\"}", exception.getMessage()), headers,
-                                       exception.getStatus(),
-                                       request);
+        return handleExceptionInternal(exception, new RestException(exception.getMessage(), exception.getStatus()
+                .value()), new HttpHeaders(), exception.getStatus(), request);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
@@ -74,11 +60,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             @NonNull final UsernameNotFoundException exception,
             @NonNull final WebRequest request) {
 
-        final var headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-
-        return handleExceptionInternal(exception, String.format("{ \"message\": \"%s\"}", exception.getMessage()), headers,
-                                       HttpStatus.NOT_FOUND,
-                                       request);
+        return handleExceptionInternal(exception,
+                                       new RestException(exception.getMessage(), HttpStatus.NOT_FOUND.value()),
+                                       new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 }
